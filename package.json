@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/demiddleton/bamazon#readme",
   "dependencies": {
+    "columnify": "^1.5.4",
     "inquirer": "^7.0.0",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "text-table": "^0.2.0"
   }
 }

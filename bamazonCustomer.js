@@ -2,6 +2,9 @@ var mysql = require("mysql");
 
 var inquirer = require("inquirer");
 
+var table = require('text-table');
+
+
 //Create variables to get user input
 var command = process.argv[2];
 var search = process.argv.slice(3).join(" ");
@@ -36,7 +39,12 @@ function start() {
     // console.log(res);
     for (var i = 0; i < res.length; i++) {
 
-      console.log(`${res[i].id}    ${res[i].product_name}   ${res[i].department_name}   ${res[i].price}    ${res[i].stock_quantity}`);
+      var t = table([
+        [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
+      ], {align: ['r', 'r', 'r', 'r', 'r']});
+      console.log(t);
+
+      //console.log(`${res[i].id}    ${res[i].product_name}   ${res[i].department_name}   ${res[i].price}    ${res[i].stock_quantity}`);
     }
     promptUser();
 
@@ -45,7 +53,8 @@ function start() {
 }
 
 function promptUser() {
-  //Create a "Prompt" with 2questions.
+
+ //Prompt the user to answer 2 questions.
   inquirer
     .prompt([
     
@@ -60,6 +69,9 @@ function promptUser() {
         message: "How many units would you like to purchase?",
         name: "units"
       }
-    ])
+    ]).then(function(){
+var id = itemID;
+
+    })
   }
 
