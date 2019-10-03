@@ -20,13 +20,24 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function(err) {
     if (err) throw err;
-    //console.log("connected as id " + connection.threadId);
-    afterConnection();
+    console.log("connected as id " + connection.threadId);
+    start();
   });
   
-  connection.query("SELECT * FROM products", function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    connection.end(); 
-});
+  function start() {
+    console.log("Here is a list of all products for sale...\n");
+    connection.query("SELECT * FROM products", function(err, res) {
+      if (err) throw err;
+      // Log all results of the SELECT statement
+      //console.log(res);
+      for (var i = 0; i < res.length; i++){
+        var id = res;
+        // console.log("_____________________________________________");
+        console.log(`${id[i].id}
+        ${id[i].id`);
+      }
+      
+      connection.end();
+    });
+  }
 
