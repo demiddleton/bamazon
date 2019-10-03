@@ -29,12 +29,10 @@ connection.connect(function(err) {
     connection.query("SELECT * FROM products", function(err, res) {
       if (err) throw err;
       // Log all results of the SELECT statement
-      //console.log(res);
+      // console.log(res);
       for (var i = 0; i < res.length; i++){
-        var id = res;
-        // console.log("_____________________________________________");
-        console.log(`${id[i].id}
-        ${id[i].id`);
+        
+        console.log(`${res[i].id}    ${res[i].product_name}   ${res[i].department_name}   ${res[i].price}    ${res[i].stock_quantity}`);
       }
       
       connection.end();
