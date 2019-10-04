@@ -41,7 +41,7 @@ function start() {
 
       var t = table([
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
-      ], {align: ['r', 'r', 'r', 'r', 'r']});
+      ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
 
       //console.log(`${res[i].id}    ${res[i].product_name}   ${res[i].department_name}   ${res[i].price}    ${res[i].stock_quantity}`);
@@ -54,10 +54,10 @@ function start() {
 
 function promptUser() {
 
- //Prompt the user to answer 2 questions.
+  //Prompt the user to answer 2 questions.
   inquirer
     .prompt([
-    
+
       {
         type: "input",
         message: "What is the ID of the product that you would like to purchase?",
@@ -69,9 +69,15 @@ function promptUser() {
         message: "How many units would you like to purchase?",
         name: "units"
       }
-    ]).then(function(){
-var id = itemID;
+    ]).then(function (option) {
+      //Create variable to hold user choice
+      
+      var query = "SELECT item FROM products WHERE ?";
+      connection.query(query, {id:option.itemID}, function(err, res){
+        console.log("You would like to purchase " + option.units + option.itemID);
+      })
+
 
     })
-  }
+}
 
