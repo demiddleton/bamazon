@@ -41,7 +41,7 @@ function start() {
       console.log(t);
     }
     promptUser();
- 
+
   });
 
 }
@@ -75,14 +75,22 @@ function promptUser() {
           } else {
             console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
 
+            var deplete = res[0].stock_quantity - option.units;
+
             var total = parseFloat(option.units * res[0].price).toFixed(2);
 
-            console.log("Your total cost is $" + total);
-            res[0].stock_quantity = res[0].stock_quantity - option.units;
+            // connection.query(
+            //   "UPDATE products SET stock_quantity = " + deplete +
+            //   "WHERE id = " + res[0].id, function (err) {
+            //     if (err) throw err;
+            //   })
+            console.log("Your order has been processed");
 
-            console.log("Thank you for shopping at bamazon! There are " + res[0].stock_quantity + " " + res[0].product_name + "'s left.");
-          confirmEnd();
+            console.log("Your total cost is $" + total);
+            console.log("Thank you for shopping at bamazon! There are " + deplete + " " + res[0].product_name + "'s left, if you would like to buy more.");
+            //confirmEnd();
           }
+
         })
     })
 }
