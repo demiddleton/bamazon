@@ -5,10 +5,6 @@ var inquirer = require("inquirer");
 var table = require('text-table');
 
 
-//Create variables to get user input
-var command = process.argv[2];
-var search = process.argv.slice(3).join(" ");
-
 // create the connection information for the sql database
 var connection = mysql.createConnection({
   host: "localhost",
@@ -43,13 +39,11 @@ function start() {
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
-
-      //console.log(`${res[i].id}    ${res[i].product_name}   ${res[i].department_name}   ${res[i].price}    ${res[i].stock_quantity}`);
     }
     promptUser();
-
-    connection.end();
+ 
   });
+
 }
 
 function promptUser() {
@@ -70,14 +64,51 @@ function promptUser() {
         name: "units"
       }
     ]).then(function (option) {
-      //Create variable to hold user choice
-      
-      var query = "SELECT item FROM products WHERE ?";
-      connection.query(query, {id:option.itemID}, function(err, res){
-        console.log("You would like to purchase " + option.units + option.itemID);
-      })
 
+      connection.query("SELECT product_name, department_name, price, stock_quantity FROM products WHERE id = ?",
+        [option.itemID], function (err, res) {
+          if (err) throw err;
+          //console.log(res);
+          if (option.units > res[0].stock_quantity || res[0].stock_quantity === 0) {
+            console.log("Insufficient inventory!  Please try again later.");
 
+          } else {
+            console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
+
+            var total = parseFloat(option.units * res[0].price).toFixed(2);
+
+            console.log("Your total cost is $" + total);
+            res[0].stock_quantity = res[0].stock_quantity - option.units;
+
+            console.log("Thank you for shopping at bamazon! There are " + res[0].stock_quantity + " " + res[0].product_name + "'s left.");
+          confirmEnd();
+          }
+        })
     })
+}
+
+
+function confirmEnd() {
+  //Confirm that the user is finished shopping
+  inquirer
+    .prompt([
+
+      {
+        type: "list",
+        message: "Would you like to continue shopping?",
+        choices: ["Yes", "No"],
+        name: "decision"
+      }
+
+    ]).then(function (option) {
+      if (err) throw err;
+
+      if (option === "No") {
+        connection.end();
+      } else {
+        start();
+      }
+    })
+
 }
 
