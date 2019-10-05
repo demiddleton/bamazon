@@ -38,25 +38,25 @@ function startMgr() {
       }
 
     ]).then(function (option) {
-      
+
       switch (option.mgrChoice) {
         case "View Products for Sale":
           viewProducts();
           break;
 
-          case "View Low Inventory":
+        case "View Low Inventory":
           viewInventory();
           break;
 
-          case "Add to Inventory":
+        case "Add to Inventory":
           addInventory();
           break;
 
-          case "Add New Product":
+        case "Add New Product":
           addProduct();
           break;
 
-          case "Exit":
+        case "Exit":
           connection.end();
           break;
 
@@ -80,56 +80,56 @@ function viewProducts() {
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
-     
-      }   
+    }
+
+    confirmEnd();
 
   });
- 
 
-  }
+}
 
-  function viewProducts() {
+function viewInventory() {
 
-    console.log("Here is a list of all products for sale...\n");
-    connection.query("SELECT * FROM products", function (err, res) {
-      if (err) throw err;
-      // Log all results of the SELECT statement
-      // console.log(res);
-      for (var i = 0; i < res.length; i++) {
-  
-        var t = table([
-          [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
-        ], { align: ['r', 'r', 'r', 'r', 'r'] });
-        console.log(t);        
+  console.log("The following items have a stock quanity less than 5:\n");
+  connection.query("SELECT * FROM products WHERE stock_quantity < 5", function (err, res) {
+    if (err) throw err;
+    // Log all results of the SELECT statement
+    // console.log(res);
+    for (var i = 0; i < res.length; i++) {
+
+      var t = table([
+        [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
+      ], { align: ['r', 'r', 'r', 'r', 'r'] });
+      console.log(t);
+    }
+
+    confirmEnd();
+
+  });
+
+}
+
+function confirmEnd() {
+  //Confirm that the user is finished shopping
+  inquirer
+    .prompt([
+
+      {
+        type: "list",
+        message: "Would you like to perform another task?",
+        choices: ["Yes", "No"],
+        name: "decision"
       }
 
-      confirmEnd();
-  
-    });
-  
-    }
+    ]).then(function (option) {
+      connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
 
-    function confirmEnd() {
-      //Confirm that the user is finished shopping
-      inquirer
-        .prompt([
-    
-          {
-            type: "list",
-            message: "Would you like to perform another task?",
-            choices: ["Yes", "No"],
-            name: "decision"
-          }
-    
-        ]).then(function (option) {
-          connection.query("SELECT * FROM products", function (err, res) {
-          if (err) throw err;
-    
-          if (option.decision === "No") {
-            connection.end();
-          } else {
-            startMgr();
-          }
-        })
+        if (option.decision === "No") {
+          connection.end();
+        } else {
+          startMgr();
+        }
       })
-    }
+    })
+}
