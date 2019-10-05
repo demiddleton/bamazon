@@ -40,7 +40,7 @@ function start() {
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
-      console.log("-----------------------------------------");
+      
     }
     promptUser();
 
