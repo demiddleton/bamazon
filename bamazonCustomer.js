@@ -78,19 +78,22 @@ function promptUser() {
             console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
 
             var id = option.itemID;
+
             var deplete = res[0].stock_quantity - option.units;
             //console.log("Deplete : " + deplete);
             //console.log(res[0]);
             //console.log("ID : " + id);
             var total = parseFloat(option.units * res[0].price).toFixed(2);
-
+            var query = "UPDATE products SET stock_quantity = " + deplete + " WHERE id = " + id;
+            console.log(query)
+            //UPDATE `table_name` SET `column_name` = `new_value' [WHERE condition];
             connection.query(
-              "UPDATE products SET stock_quantity = " + deplete + "WHERE id = " + id, function (err, res) {
+              query, function (err, res) {
                 if (err) {
                   console.log("This is what causing it to error");
                   throw err;
                 }
-                //console.log (res);
+                console.log (res);
               })
             console.log("Your order has been processed");
 
