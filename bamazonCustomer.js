@@ -25,7 +25,7 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   start();
- 
+
 });
 
 function start() {
@@ -39,22 +39,17 @@ function start() {
       var t = table([
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
-      console.log(t);    
-      
+      console.log(t);
     }
     console.log("\r");
     promptUser();
-
   });
-
 }
 
 function promptUser() {
-
   //Prompt the user to answer 2 questions.
   inquirer
     .prompt([
-
       {
         type: "input",
         message: "What is the ID of the product that you would like to purchase?",
@@ -74,10 +69,9 @@ function promptUser() {
           //console.log(res);
           if (option.units > res[0].stock_quantity || res[0].stock_quantity === 0) {
             console.log("Insufficient inventory!  Please try again later.");
-            confirm.end();
-
+            console.log("\r");
           } else {
-            
+
             console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
             console.log("\r");
 
@@ -90,7 +84,7 @@ function promptUser() {
             var total = parseFloat(option.units * res[0].price).toFixed(2);
             var query = "UPDATE products SET stock_quantity = " + deplete + " WHERE id = " + id;
             //console.log(query)            
-            
+
             connection.query(
               query, function (err, res) {
                 if (err) {
@@ -106,18 +100,14 @@ function promptUser() {
             console.log("\r");
           }
           confirmEnd();
-          
         })
-    })   
-  
+    })
 }
-
 
 function confirmEnd() {
   //Confirm that the user is finished shopping
   inquirer
     .prompt([
-
       {
         type: "list",
         message: "Would you like to continue shopping?",
@@ -127,15 +117,15 @@ function confirmEnd() {
 
     ]).then(function (option) {
       connection.query("SELECT * FROM products", function (err, res) {
-      if (err) throw err;
+        if (err) throw err;
 
-      if (option.decision === "No") {
-        connection.end();
-      } else {
-        start();
-      }
+        if (option.decision === "No") {
+          connection.end();
+        } else {
+          start();
+        }
+      })
     })
-  })
 
 }
 

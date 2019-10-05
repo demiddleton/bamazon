@@ -81,11 +81,8 @@ function viewProducts() {
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
     }
-
     confirmEnd();
-
   });
-
 }
 
 function viewInventory() {
@@ -102,18 +99,14 @@ function viewInventory() {
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
     }
-
     confirmEnd();
-
   });
-
 }
 
 function confirmEnd() {
   //Confirm that the user is finished shopping
   inquirer
     .prompt([
-
       {
         type: "list",
         message: "Would you like to perform another task?",
