@@ -25,7 +25,7 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   start();
-    //confirmEnd();
+ 
 });
 
 function start() {
@@ -39,9 +39,10 @@ function start() {
       var t = table([
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
-      console.log(t);
+      console.log(t);    
       
     }
+    console.log("\r");
     promptUser();
 
   });
@@ -93,7 +94,7 @@ function promptUser() {
                   //console.log("This is what causing it to error");
                   throw err;
                 }
-                console.log (res);
+                //console.log (res);
               })
             console.log("Your order has been processed");
 
@@ -101,9 +102,11 @@ function promptUser() {
             console.log("Thank you for shopping at bamazon! There are " + deplete + " " + res[0].product_name + "'s left, if you would like to buy more.");
           
           }
-
+          confirmEnd();
+          
         })
-    })
+    })   
+  
 }
 
 
@@ -120,14 +123,16 @@ function confirmEnd() {
       }
 
     ]).then(function (option) {
+      connection.query("SELECT * FROM products", function (err, res) {
       if (err) throw err;
 
-      if (option === "No") {
+      if (option.decision === "No") {
         connection.end();
       } else {
         start();
       }
     })
+  })
 
 }
 

@@ -33,13 +33,13 @@ function startMgr() {
       {
         type: "list",
         message: "What would you like to do?",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"],
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Exit"],
         name: "mgrChoice"
       }
 
     ]).then(function (option) {
       
-      switch (option) {
+      switch (option.mgrChoice) {
         case "View Products for Sale":
           viewProducts();
           break;
@@ -54,6 +54,10 @@ function startMgr() {
 
           case "Add New Product":
           addProduct();
+          break;
+
+          case "Exit":
+          connection.end();
           break;
 
         default:
@@ -76,10 +80,56 @@ function viewProducts() {
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
-      
-    }
-    //promptUser();
+     
+      }   
 
   });
+ 
 
   }
+
+  function viewProducts() {
+
+    console.log("Here is a list of all products for sale...\n");
+    connection.query("SELECT * FROM products", function (err, res) {
+      if (err) throw err;
+      // Log all results of the SELECT statement
+      // console.log(res);
+      for (var i = 0; i < res.length; i++) {
+  
+        var t = table([
+          [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
+        ], { align: ['r', 'r', 'r', 'r', 'r'] });
+        console.log(t);        
+      }
+
+      confirmEnd();
+  
+    });
+  
+    }
+
+    function confirmEnd() {
+      //Confirm that the user is finished shopping
+      inquirer
+        .prompt([
+    
+          {
+            type: "list",
+            message: "Would you like to perform another task?",
+            choices: ["Yes", "No"],
+            name: "decision"
+          }
+    
+        ]).then(function (option) {
+          connection.query("SELECT * FROM products", function (err, res) {
+          if (err) throw err;
+    
+          if (option.decision === "No") {
+            connection.end();
+          } else {
+            startMgr();
+          }
+        })
+      })
+    }
