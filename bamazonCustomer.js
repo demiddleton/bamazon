@@ -86,11 +86,11 @@ function promptUser() {
             var total = parseFloat(option.units * res[0].price).toFixed(2);
             var query = "UPDATE products SET stock_quantity = " + deplete + " WHERE id = " + id;
             console.log(query)
-            //UPDATE `table_name` SET `column_name` = `new_value' [WHERE condition];
+            
             connection.query(
               query, function (err, res) {
                 if (err) {
-                  console.log("This is what causing it to error");
+                  //console.log("This is what causing it to error");
                   throw err;
                 }
                 console.log (res);
