@@ -25,6 +25,7 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   start();
+    //confirmEnd();
 });
 
 function start() {
@@ -39,6 +40,7 @@ function start() {
         [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
       ], { align: ['r', 'r', 'r', 'r', 'r'] });
       console.log(t);
+      console.log("-----------------------------------------");
     }
     promptUser();
 
@@ -75,20 +77,26 @@ function promptUser() {
           } else {
             console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
 
+            var id = option.itemID;
             var deplete = res[0].stock_quantity - option.units;
-
+            //console.log("Deplete : " + deplete);
+            //console.log(res[0]);
+            //console.log("ID : " + id);
             var total = parseFloat(option.units * res[0].price).toFixed(2);
 
-            // connection.query(
-            //   "UPDATE products SET stock_quantity = " + deplete +
-            //   "WHERE id = " + res[0].id, function (err) {
-            //     if (err) throw err;
-            //   })
+            connection.query(
+              "UPDATE products SET stock_quantity = " + deplete + "WHERE id = " + id, function (err, res) {
+                if (err) {
+                  console.log("This is what causing it to error");
+                  throw err;
+                }
+                //console.log (res);
+              })
             console.log("Your order has been processed");
 
             console.log("Your total cost is $" + total);
             console.log("Thank you for shopping at bamazon! There are " + deplete + " " + res[0].product_name + "'s left, if you would like to buy more.");
-            //confirmEnd();
+          
           }
 
         })
