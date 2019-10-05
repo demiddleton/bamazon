@@ -74,9 +74,12 @@ function promptUser() {
           //console.log(res);
           if (option.units > res[0].stock_quantity || res[0].stock_quantity === 0) {
             console.log("Insufficient inventory!  Please try again later.");
+            confirm.end();
 
           } else {
+            
             console.log("OK, you would like to purchase " + option.units + " " + res[0].product_name + " for " + res[0].price + " each.");
+            console.log("\r");
 
             var id = option.itemID;
 
@@ -86,7 +89,7 @@ function promptUser() {
             //console.log("ID : " + id);
             var total = parseFloat(option.units * res[0].price).toFixed(2);
             var query = "UPDATE products SET stock_quantity = " + deplete + " WHERE id = " + id;
-            console.log(query)
+            //console.log(query)            
             
             connection.query(
               query, function (err, res) {
@@ -96,11 +99,11 @@ function promptUser() {
                 }
                 //console.log (res);
               })
-            console.log("Your order has been processed");
+            console.log("Your order has been processed\r");
 
-            console.log("Your total cost is $" + total);
-            console.log("Thank you for shopping at bamazon! There are " + deplete + " " + res[0].product_name + "'s left, if you would like to buy more.");
-          
+            console.log("Your total cost is $" + total + "\r");
+            console.log("Thank you for shopping at bamazon! There are " + deplete + " " + res[0].product_name + "'s left, if you would like to buy more.\r");
+            console.log("\r");
           }
           confirmEnd();
           
