@@ -59,11 +59,6 @@ function startMgr() {
         case "Exit":
           connection.end();
           break;
-
-        default:
-          console.log("Please enter a command.");
-          startMgr();
-          break;
       }
     })
 }
@@ -167,11 +162,52 @@ function promptMgr() {
 
           confirmEnd();
         })
-          
     })
-    // confirmEnd();
 }
 
+function addProduct() {
+
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the name of the new product?",
+        name: "name"
+      },
+
+      {
+        type: "input",
+        message: "What is the department name?",
+        name: "department"
+      },
+
+      {
+        type: "input",
+        message: "What is the price?",
+        name: "price"
+      },
+
+      {
+        type: "input",
+        message: "What is the quantity of items being stocked?",
+        name: "quantity"
+      }
+
+    ]).then(function (newProduct) {
+      connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
+
+        console.log(newProduct);
+
+        // connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (" + product + ", " + department + ", " price + ", " quantity +" )",
+        //  function (err, res) {
+        //     if (err) throw err;
+
+        //     console.log(query);
+        //   })          
+      })
+    });
+}
 
 function confirmEnd() {
   //Confirm that the user is finished shopping
