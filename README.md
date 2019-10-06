@@ -15,3 +15,12 @@ ________________________________________________________________________________
 ![Image of customer view #2](Images\bamazonCustomer1.png)
 _______________________________________________________________________________________________________________________
 
+# Manager View
+![Image of manager view #1](Images\bamazonManager0.png)
+
+![Image of manager view #2](Images\bamazonManager1.png)
+
+![Image of manager view #3](Images\bamazonManager2.png)
+
+![Image of manager view #4](Images\bamazonManager3.png)
+_______________________________________________________________________________________________________________________
