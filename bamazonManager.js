@@ -62,6 +62,7 @@ function startMgr() {
 
         default:
           console.log("Please enter a command.");
+          startMgr();
           break;
       }
     })
@@ -101,6 +102,60 @@ function viewInventory() {
     }
     confirmEnd();
   });
+}
+
+function addInventory() {
+  inquirer
+    .prompt([
+
+      {
+        type: "list",
+        message: "Which item would you like to replenish?",
+        choices: ["Pillow", "Comforter", "Shower Curtain", "Shower Liner", "Blender", "Airfryer", "Bedskirt", "Dishcloth", "Rug Set", "Toothbrush Holder"],
+        name: "choiceI"
+      },
+
+      {
+        type: "input",
+        message: "How many units would you like to restock?",
+        name: "units"
+      }
+
+    ]).then(function (option) {
+
+      switch (option.mgrChoice) {
+        case "Pillow":
+          break;
+
+        case "Comforter":
+          break;
+
+        case "Shower Curtain":
+          break;
+
+        case "Shower Liner":
+          break;
+
+        case "Blender":
+          break;
+
+        case "Airfryer":
+          break;
+
+        case "Bedskirt":
+          break;
+
+        case "Dishcloth":
+          break;
+
+        case "Rug Set":
+          break;
+
+        case "Toothbrush Holder":
+          break;
+
+      }
+    })
 }
 
 function confirmEnd() {
