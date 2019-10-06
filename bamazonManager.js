@@ -105,14 +105,29 @@ function viewInventory() {
 }
 
 function addInventory() {
+  console.log("Here is a list our current inventory...\n");
+  connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+
+    for (var i = 0; i < res.length; i++) {
+      var t = table([
+        [res[i].id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
+      ], { align: ['r', 'r', 'r', 'r', 'r'] });
+      console.log(t);
+    }
+    promptMgr();
+  });
+}
+
+
+function promptMgr() {
+
   inquirer
     .prompt([
-
       {
-        type: "list",
-        message: "Which item would you like to replenish?",
-        choices: ["Pillow", "Comforter", "Shower Curtain", "Shower Liner", "Blender", "Airfryer", "Bedskirt", "Dishcloth", "Rug Set", "Toothbrush Holder"],
-        name: "choiceI"
+        type: "input",
+        message: "What is the ID of the product that you would like to replenish?",
+        name: "itemID"
       },
 
       {
@@ -120,43 +135,43 @@ function addInventory() {
         message: "How many units would you like to restock?",
         name: "units"
       }
+    ]).then(function (mgrOption) {
 
-    ]).then(function (option) {
+      connection.query("SELECT product_name, department_name, price, stock_quantity FROM products WHERE id = ?",
+        [mgrOption.itemID], function (err, res) {
+          if (err) throw err;
 
-      switch (option.mgrChoice) {
-        case "Pillow":
-          break;
+          var id = mgrOption.itemID;
+          var units = parseInt(mgrOption.units);
+          var stock_quantity = parseInt(res[0].stock_quantity);
 
-        case "Comforter":
-          break;
+          var increase = stock_quantity + units;
+          // console.log("Increase : " + increase);
+          // console.log(res[0]);
+          // console.log("ID : " + id);
 
-        case "Shower Curtain":
-          break;
+          var query = "UPDATE products SET stock_quantity = " + increase + " WHERE id = " + id;
+          //console.log(query)
 
-        case "Shower Liner":
-          break;
+          connection.query(
+            query, function (err, res) {
+              if (err) {
+                //console.log("This is what causing it to error");
+                throw err;
+              }
+              //console.log(res);
+            })
+          console.log("Your request has been processed\r");
+          console.log("There are " + increase + " " + res[0].product_name + "'s in inventory.\r");
+          console.log("\r");
 
-        case "Blender":
-          break;
-
-        case "Airfryer":
-          break;
-
-        case "Bedskirt":
-          break;
-
-        case "Dishcloth":
-          break;
-
-        case "Rug Set":
-          break;
-
-        case "Toothbrush Holder":
-          break;
-
-      }
+          confirmEnd();
+        })
+          
     })
+    // confirmEnd();
 }
+
 
 function confirmEnd() {
   //Confirm that the user is finished shopping
