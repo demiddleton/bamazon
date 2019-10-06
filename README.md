@@ -10,7 +10,8 @@ ________________________________________________________________________________
 _______________________________________________________________________________________________________________________
 
 # Customer View
-![Image of customer view](bamazonCustomer0.png)
+![Image of customer view #1](Images\bamazonCustomer0.png)
 
-![Image of customer view](bamazonCustomer1.png)
+![Image of customer view #2](Images\bamazonCustomer1.png)
 _______________________________________________________________________________________________________________________
+
