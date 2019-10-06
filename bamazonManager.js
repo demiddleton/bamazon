@@ -199,12 +199,21 @@ function addProduct() {
 
         console.log(newProduct);
 
-        // connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (" + product + ", " + department + ", " price + ", " quantity +" )",
-        //  function (err, res) {
-        //     if (err) throw err;
+        var name = JSON.stringify(newProduct.name);
+        var department = JSON.stringify(newProduct.department);
 
-        //     console.log(query);
-        //   })          
+        var query = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (" + name + ", " + department + ", " + newProduct.price + ", " + newProduct.quantity + ")";
+        //console.log(query)            
+
+            connection.query(
+              query, function (err, res) {
+                if (err) {
+                  console.log("This is what causing it to error");
+                  throw err;
+                }
+                //console.log (res);
+              })          
+              confirmEnd();
       })
     });
 }
