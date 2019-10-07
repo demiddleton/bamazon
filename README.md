@@ -14,5 +14,11 @@ ________________________________________________________________________________
 _______________________________________________________________________________________________________________________
 
 # Manager View
-![Images of manager view](Images)
+![Images of manager view #1](bamazonManager0.png)
+
+![Images of manager view #2](bamazonManager1.png)
+
+![Images of manager view #3](bamazonManager2.png)
+
+![Images of manager view #4](bamazonManager3.png)
 _______________________________________________________________________________________________________________________
